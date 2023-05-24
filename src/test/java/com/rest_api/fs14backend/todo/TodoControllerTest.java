@@ -25,7 +25,7 @@ class TodoControllerTest {
   @Test
   @WithMockUser(username = "yazan", roles = {"ADMIN"})
   void hello() throws Exception {
-    RequestBuilder request = MockMvcRequestBuilders.get("/hello?name=Hai"); // Arrange
+    RequestBuilder request = MockMvcRequestBuilders.get("api/v1/todos/hello?name=Hai"); // Arrange
 
     MvcResult results = mvc.perform(request).andReturn();
 
