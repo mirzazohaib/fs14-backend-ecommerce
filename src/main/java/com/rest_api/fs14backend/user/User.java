@@ -21,11 +21,19 @@ public class User {
   @Column(unique = true)
   private String username;
 
+  @Enumerated(EnumType.STRING)
+  private Role role;
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private String password;
 
-  public User(String username, String password){
+  public User(String username, String password, Role role) {
     this.username = username;
     this.password = password;
+    this.role = role;
+  }
+
+  enum Role {
+    USER,
+    ADMIN
   }
 }

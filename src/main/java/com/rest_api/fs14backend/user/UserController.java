@@ -5,13 +5,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+
+@RequestMapping("api/v1")
+@CrossOrigin(origins = "http://127.0.0.1:5173")
 @RestController
 public class UserController {
 
@@ -31,8 +33,9 @@ public class UserController {
   }
 
   @PostMapping("/signin")
-  public String login(@RequestBody AuthRequest authRequest){
+  public Map<String, String> login(@RequestBody AuthRequest authRequest) {
 
+    Map<String, String> token = new HashMap<>();
     authenticationManager.authenticate(
       new UsernamePasswordAuthenticationToken(
         authRequest.getUsername(),
@@ -41,17 +44,17 @@ public class UserController {
     );
 
     User user = userRepository.findByUsername(authRequest.getUsername());
+    token.put("token", jwtUtils.generateToken(user));
 
-    return jwtUtils.generateToken(user);
+    return token;
   }
 
   @PostMapping("/signup")
   public User signup(@RequestBody User user) {
 
-    User newUser = new User(user.getUsername(), passwordEncoder.encode(user.getPassword()));
+    User newUser = new User(user.getUsername(), passwordEncoder.encode(user.getPassword()), User.Role.USER);
     userRepository.save(newUser);
 
     return newUser;
   }
-
 }
