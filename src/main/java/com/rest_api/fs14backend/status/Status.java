@@ -1,6 +1,7 @@
 package com.rest_api.fs14backend.status;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
@@ -11,6 +12,9 @@ import java.util.UUID;
 @Table(name = "status")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+
+
 public class Status {
     @Id
     @GeneratedValue

@@ -2,6 +2,7 @@ package com.rest_api.fs14backend.cart;
 
 import com.rest_api.fs14backend.user.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
@@ -13,12 +14,15 @@ import java.util.UUID;
 @Table(name = "cart")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+
 public class Cart {
     @Id
     @GeneratedValue
     @UuidGenerator
     private UUID id;
     @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id")
     private User user;
     //private Product product;
     @Column(nullable = true, columnDefinition = "varchar(50)")

@@ -3,25 +3,35 @@ package com.rest_api.fs14backend.order;
 import com.rest_api.fs14backend.product.Product;
 import com.rest_api.fs14backend.user.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "order")
 @Table(name = "order")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+
+
 public class Order {
     @Id
     @GeneratedValue
     @UuidGenerator
     private UUID id;
+
     @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
-    private Product product;
+
+    @OneToMany(mappedBy = "order")
+    private List<Product> products;
+
     private BigDecimal total;
     private int quantity;
     private String shipmentDate;

@@ -1,8 +1,10 @@
 package com.rest_api.fs14backend.product;
 
 import com.rest_api.fs14backend.category.Category;
+import com.rest_api.fs14backend.order.Order;
 import com.rest_api.fs14backend.status.Status;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
@@ -14,7 +16,7 @@ import java.util.UUID;
 @Table(name = "product")
 @Data
 @NoArgsConstructor
-
+@AllArgsConstructor
 
 public class Product {
     @Id
@@ -37,6 +39,10 @@ public class Product {
     @ManyToOne(optional = false)
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 
     @OneToOne(optional = false)
     @JoinColumn(name = "status_id")
