@@ -1,7 +1,6 @@
 package com.rest_api.fs14backend.order;
 
 import com.rest_api.fs14backend.product.Product;
-import com.rest_api.fs14backend.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,10 +23,6 @@ public class Order {
     @GeneratedValue
     @UuidGenerator
     private UUID id;
-
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 
     @OneToMany(mappedBy = "order")
     private List<Product> products;

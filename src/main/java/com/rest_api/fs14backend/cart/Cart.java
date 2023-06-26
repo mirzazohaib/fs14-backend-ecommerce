@@ -1,6 +1,6 @@
 package com.rest_api.fs14backend.cart;
 
-import com.rest_api.fs14backend.user.User;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,9 +21,7 @@ public class Cart {
     @GeneratedValue
     @UuidGenerator
     private UUID id;
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id")
-    private User user;
+
     //private Product product;
     @Column(nullable = true, columnDefinition = "varchar(50)")
     private int quantity;
