@@ -19,6 +19,10 @@ public class ProductController {
     @Autowired
     private ProductMapper productMapper;
 
+    @GetMapping("/hello")
+    public String hello(@RequestParam(name = "name", defaultValue = "World") String name) {
+        return String.format("Hello, %s", name);
+    }
     @GetMapping("/")
     public List<Product> getAllProducts() {
         return productService.findProducts();
