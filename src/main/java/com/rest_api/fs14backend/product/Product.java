@@ -52,7 +52,7 @@ public class Product {
         this.title = title;
         this.description = description;
         this.price = price;
-        this.quantity =quantity;
+        this.quantity = quantity;
         this.category = category;
     }
 }
