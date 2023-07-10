@@ -1,60 +1,40 @@
 package com.rest_api.fs14backend.user;
 
-import com.rest_api.fs14backend.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
-
-@RequestMapping("api/v1")
-@CrossOrigin(origins = "http://127.0.0.1:5173")
 @RestController
+@RequestMapping("/api/v1")
 public class UserController {
-
   @Autowired
-  private AuthenticationManager authenticationManager;
-  @Autowired
-  private UserRepository userRepository;
-  @Autowired
-  private PasswordEncoder passwordEncoder;
-  @Autowired
-  private JwtUtils jwtUtils;
+  private UserService userService;
 
   @GetMapping("/users")
   public List<User> findAll() {
-    System.out.println("we are inside users");
-    return userRepository.findAll();
+    return userService.findAll();
   }
 
-  @PostMapping("/signin")
+  @PostMapping("/auth/signin")
   public Map<String, String> login(@RequestBody AuthRequest authRequest) {
-
-    Map<String, String> token = new HashMap<>();
-    authenticationManager.authenticate(
-      new UsernamePasswordAuthenticationToken(
-        authRequest.getUsername(),
-        authRequest.getPassword()
-      )
-    );
-
-    User user = userRepository.findByUsername(authRequest.getUsername());
-    token.put("token", jwtUtils.generateToken(user));
-
-    return token;
+    return userService.loginUser(authRequest);
   }
 
-  @PostMapping("/signup")
+  @PostMapping("/auth/signup")
   public User signup(@RequestBody User user) {
+    return userService.createOne(user);
+  }
 
-    User newUser = new User(user.getUsername(), passwordEncoder.encode(user.getPassword()), User.Role.USER);
-    userRepository.save(newUser);
+  @GetMapping("/users/{id}")
+  public User findById(@PathVariable UUID id) {
+    return userService.findById(id);
+  }
 
-    return newUser;
+  @DeleteMapping("/users/{id}")
+  public void deleteById(@PathVariable UUID id) {
+    userService.deleteOne(id);
   }
 }

@@ -1,11 +1,13 @@
 package com.rest_api.fs14backend.SecurityConfig;
 
 
+import com.rest_api.fs14backend.filters.CorsFilter;
 import com.rest_api.fs14backend.filters.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.core.Ordered;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,10 +22,12 @@ public class SecurityConfig {
 
   @Autowired
   private JwtFilter jwtFilter;
+  @Autowired
+  private CorsFilter corsFilter;
 
   @Bean
   public AuthenticationManager authenticationManager(
-    AuthenticationConfiguration authenticationConfiguration
+          AuthenticationConfiguration authenticationConfiguration
   ) throws Exception {
     return authenticationConfiguration.getAuthenticationManager();
   }
@@ -35,43 +39,41 @@ public class SecurityConfig {
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http
-      .cors()
-      .and()
-      .csrf()
-      .disable()
-      .authorizeHttpRequests()
-      .requestMatchers("/api/v1/signup", "/api/v1/signin")
-      .permitAll()
-      .and()
-      .authorizeHttpRequests()
-      .requestMatchers(HttpMethod.GET, "/api/v1/todos/")
-      .permitAll()
-      .requestMatchers("/api/v1/users").hasRole("ADMIN")
-      .requestMatchers("/hello").hasRole("ADMIN")
-      .anyRequest()
-      .authenticated()
-      .and()
-      .sessionManagement()
-      .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-      .and()
-      // Add JWT token filter
-      .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+    HttpSecurity httpSecurity = http
+            .csrf()
+            .disable()
+            .authorizeHttpRequests()
+            .requestMatchers(
+                    "/api/v1/auth/signup",
+                    "/api/v1/auth/signin",
+                    "/api/v1/products",
+                    "/api/v1/products/{id}",
+                    "/api/v1/users",
+                    "/api/v1/users/{id}",
+                    "/api/v1/categories",
+                    "/api/v1/orders"
+            )
+            .permitAll()
+            .anyRequest()
+            .authenticated()
+            .and()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+//                .httpBasic(withDefaults()).formLogin()
+//                .and()
+            // Add JWT token filter
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http.build();
   }
-}
 
-//  @Bean
-//  public CorsFilter corsFilter() {
-//    CorsConfiguration corsConfiguration = new CorsConfiguration();
-//    corsConfiguration.setAllowCredentials(true);
-//    corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "myDomaibn.com"));
-//    corsConfiguration.setAllowedHeaders(Arrays.asList("Origin", "Access-Control-Allow-Origin", "Content-Type",
-//      "Accept", "Authorization", "Origin, Accept", "X-Requested-With",
-//      "Access-Control-Request-Method", "Access-Control-Allow-Origin", " Access-Control-Allow-Credentials"));
-//    corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-//    UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-//    urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
-//    return new CorsFilter(urlBasedCorsConfigurationSource);
-//  }
+  @Bean
+  public FilterRegistrationBean<CorsFilter> corsFilterRegistrationBean() {
+    FilterRegistrationBean<CorsFilter> registrationBean = new FilterRegistrationBean<>();
+    CorsFilter corsFilter = new CorsFilter();
+    registrationBean.setFilter(corsFilter);
+    registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+    return registrationBean;
+  }
+}

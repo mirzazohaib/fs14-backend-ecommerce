@@ -1,30 +1,24 @@
-package com.rest_api.fs14backend.inventory;
+package com.rest_api.fs14backend.cart;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
 
-@Entity(name =  "inventory")
-@Table(name = "inventories")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-
-
-public class Inventory {
+public class CartItem {
     @Id
     @GeneratedValue
     @UuidGenerator
-
     private UUID id;
-    @Column(nullable = false)
+    private UUID productId;
     private int quantity;
 
-    public Inventory(int quantity) {
+    public CartItem(UUID productId, int quantity) {
+        this.productId = productId;
         this.quantity = quantity;
     }
 }

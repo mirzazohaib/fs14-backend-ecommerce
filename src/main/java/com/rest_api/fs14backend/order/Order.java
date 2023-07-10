@@ -1,44 +1,47 @@
 package com.rest_api.fs14backend.order;
 
-import com.rest_api.fs14backend.product.Product;
+import com.rest_api.fs14backend.orderItem.OrderItem;
+import com.rest_api.fs14backend.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "order")
-@Table(name = "order")
+@Table(name = "orders")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-
-
 public class Order {
     @Id
     @GeneratedValue
     @UuidGenerator
     private UUID id;
+    @Column(name = "purchase_at")
+    @CreationTimestamp
+    private Date purchaseAt;
 
-    @OneToMany(mappedBy = "order")
-    private List<Product> products;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    private BigDecimal total;
-    private int quantity;
-    private String shipmentDate;
-    private String status;
-    private boolean isCompleted;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItemList = new ArrayList<>();
 
-    public Order(BigDecimal total, int quantity, String shipmentDate, String status, boolean isCompleted) {
-        this.total = total;
-        this.quantity = quantity;
-        this.shipmentDate = shipmentDate;
-        this.status = status;
-        this.isCompleted = isCompleted;
+    public Order(User user) {
+        this.user = user;
     }
 
+    public List<OrderItem> getOrderItemList() {
+        return orderItemList;
+    }
+
+    public void setOrderItemList() {
+        this.orderItemList = orderItemList;
+    }
 }

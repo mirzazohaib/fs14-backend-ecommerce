@@ -4,6 +4,7 @@ import com.rest_api.fs14backend.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,11 @@ import java.util.function.Function;
 
 @Service
 public class JwtUtils {
-  final String secret = "ThisIsAMuchLongerPasswordOhBoysDoINeedMoreCharacters";
+  private final String secret;
+
+  public JwtUtils(@Value("${jwt.secret}") String secret) {
+    this.secret = secret;
+  }
 
   // secret variable to be moved to .env
   public String generateToken(User user) {

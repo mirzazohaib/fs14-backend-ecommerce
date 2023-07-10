@@ -10,7 +10,7 @@ import org.hibernate.annotations.UuidGenerator;
 import java.util.UUID;
 
 @Entity(name = "category")
-@Table(name = "category")
+@Table(name = "categories")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
