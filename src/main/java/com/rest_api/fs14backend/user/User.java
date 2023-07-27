@@ -18,6 +18,9 @@ public class User {
   @UuidGenerator
   private UUID id;
 
+  @Column
+  private String name;
+
   @Column(unique = true)
   private String username;
 
@@ -26,7 +29,8 @@ public class User {
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private String password;
 
-  public User(String username, String password, Role role) {
+  public User(String name, String username, String password, Role role) {
+    this.name = name;
     this.username = username;
     this.password = password;
     this.role = role;

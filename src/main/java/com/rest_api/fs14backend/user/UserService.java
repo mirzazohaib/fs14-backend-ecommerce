@@ -51,6 +51,7 @@ public class UserService {
 
     public User createOne(User user) {
         User newUser = new User(
+                user.getName(),
                 user.getUsername(),
                 passwordEncoder.encode(user.getPassword()),
                 User.Role.USER
