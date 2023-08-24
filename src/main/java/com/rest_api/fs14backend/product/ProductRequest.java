@@ -12,10 +12,15 @@ import java.util.UUID;
 @AllArgsConstructor
 
 public class ProductRequest {
-    private UUID categoryId;
-    private String title;
-    private BigDecimal price;
-    private String description;
+    private UUID id;
+    private String name;
+    private String slug;
     private String image;
-    private int quantity;
+    private String brand;
+    private String category;
+    private String description;
+    private BigDecimal price;
+    private Integer countInStock;
+    private Integer rating;
+    private Integer numReviews;
 }

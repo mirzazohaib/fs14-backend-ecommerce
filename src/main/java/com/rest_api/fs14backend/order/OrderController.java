@@ -25,9 +25,9 @@ public class OrderController {
 
     @Transactional
     @PostMapping
-    public Order createOne(@RequestBody OrderRequest orderRequest) throws Exception {
-        return orderService.createOne(orderRequest);
-    }
+//    public Order createOne(@RequestBody OrderRequest orderRequest) throws Exception {
+//        return orderService.createOne(orderRequest);
+//    }
     @DeleteMapping("/{id}")
     public void deleteOne(@PathVariable UUID id) {
         orderService.deleteOne(id);

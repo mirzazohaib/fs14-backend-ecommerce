@@ -24,15 +24,20 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public Product findById(@PathVariable UUID id) {
-        Product product = productService.findById(id);
 
-        return product;
+        return productService.findById(id);
+    }
+
+    @GetMapping("slug/{slug}")
+    public Product findBySlug(@PathVariable String slug) {
+
+        return productService.findBySlug(slug);
     }
 
     @PutMapping("/{id}")
-    public Product updateOne(@PathVariable UUID id, @RequestBody ProductRequest productRequest) {
-        return productService.updateById(id, productRequest);
-    }
+//    public Product updateOne(@PathVariable UUID id, @RequestBody ProductRequest productRequest) {
+//        return productService.updateById(id, productRequest);
+//    }
 
     @DeleteMapping("/{id}")
     public void deleteOne(@PathVariable UUID id) {
