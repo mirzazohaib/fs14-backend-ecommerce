@@ -1,9 +1,6 @@
 package com.rest_api.fs14backend.product;
 
-import com.rest_api.fs14backend.category.Category;
-import com.rest_api.fs14backend.inventory.Inventory;
 import jakarta.persistence.*;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
@@ -20,26 +17,47 @@ public class Product {
     @GeneratedValue
     @UuidGenerator
     private UUID id;
+
     @Column(nullable = false)
-    private BigDecimal price;
+    private String name;
+
+    @Column(nullable = false, unique = true)
+    private String slug;
+
     @Column(nullable = false)
-    private String title;
+    private String image;
+
+    @Column(nullable = false)
+    private String brand;
+
+    @Column(nullable = false)
+    private String category;
+
     @Column(nullable = false)
     private String description;
-    private String image;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="inventory_id")
-    private Inventory inventory;
-    @ManyToOne( optional = false)
-    @JoinColumn(name="category_id")
-    private Category category;
 
-    public Product(BigDecimal price, String title, String description, String image, Inventory inventory, Category category ){
-        this.price = price;
-        this.title = title;
-        this.description = description;
-        this.image = image;
-        this.inventory = inventory;
+    @Column(nullable = false)
+    private BigDecimal price;
+
+    @Column(nullable = false)
+    private Integer countInStock;
+
+    @Column(nullable = false)
+    private Integer rating;
+
+    @Column(nullable = false)
+    private Integer numReviews;
+
+    public Product(String name, String slug, String image, String brand, String category, String description, BigDecimal price, Integer countInStock, Integer rating, Integer numReviews) {
+        this.name = name;
+        this.slug = slug;
+        this.image =image;
+        this.brand = brand;
         this.category = category;
+        this.description = description;
+        this.price = price;
+        this.countInStock = countInStock;
+        this.rating = rating;
+        this.numReviews = numReviews;
     }
 }

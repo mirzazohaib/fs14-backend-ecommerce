@@ -9,10 +9,15 @@ import java.util.UUID;
 @NoArgsConstructor
 @Data
 public class ProductDTO {
-    private UUID categoryId;
-    private String title;
+    private UUID id;
+    private String name;
+    private String slug;
+    private String image;
+    private String brand;
+    private String category;
     private String description;
     private BigDecimal price;
-    private int quantity;
-    private String image;
+    private Integer countInStock;
+    private Integer rating;
+    private Integer numReviews;
 }
